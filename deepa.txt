@@ -1,0 +1,61 @@
+UI Layer --> Business Logic --> API
+Business Logic :
+
+User name
+Pwd
+ClientId
+ClinetSecret
+GrantType
+
+-->
+1.Generate Token
+2.Pull Data
+
+-->Refresh Token
+
+Generate Token --> Method --> try ,Catch --> Catch Exception --> 401 ?
+Yes --> Refresh Token Method --> Pull Data 
+
+------------------------
+
+1.Generate Token --> 
+
+2.Pull Data --> Try ,catch --> 401 ? --> Yes 
+
+3.Refresh Token
+
+---------------------------
+
+
+# Check Version
+$PSVersionTable.PSVersion
+Write-Host `r`n`r`n
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+# Get Access Token
+$body = @{
+  grant_type='urn:ibm:params:oauth:grant-type:apikey'
+  apikey='8-YezqtsZkhAKaCQXe4x_WTHuO94NfxzkrflOOVCcuaP'
+}
+$url = 'https://iam.ng.bluemix.net/oidc/token'
+
+$response = Invoke-WebRequest -Uri $url -Method Post -Body $body -ContentType 'application/x-www-form-urlencoded'
+
+# Get Onboarding Token
+$url = 'https://gtd-jv-app-sandbox.mybluemix.net/onboarding/v1/iam/exchange_token/solution/gtd-sandbox/organization/4b1a6584-29d6-4a61-9f62-a8795929efa0'
+$body = $response.Content
+$response = Invoke-RestMethod -Uri $url -Method Post -Body $body -ContentType 'application/json'
+$response | out-string -Width 1000
+
+code intersed
+
+getDelegationId() {
+  alert("getDelegationId");
+    var tokennew="Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InBic2EtcHJvZC51cy1zb3V0aC5jb250YWluZXJzLm15Ymx1ZW1peC5uZXQvM2IzNGI2YTItMGE5Yy00NTczLWJhMDItYTVlYTU1MWQyMzM0L29uYm9hcmRpbmcifQ.eyJvaWQiOiI0YjFhNjU4NC0yOWQ2LTRhNjEtOWY2Mi1hODc5NTkyOWVmYTAiLCJvcmdhbml6YXRpb25UeXBlcyI6W10sInVpZCI6ImU1Yzc4N2FkLWNhZDgtNGFiMC04YWUxLTc4NDgzZWZjYjQ4MyIsInNpZCI6Imd0ZC1zYW5kYm94Iiwicm9sZXMiOltdLCJpc1JlZmVyZW5jZVRva2VuIjpmYWxzZSwiZ3JvdXBzIjpbXSwiaWF0IjoxNTI5MzQwODE3LCJleHAiOjE1MjkzNTE2MTcsImlzcyI6InBic2EtcHJvZC51cy1zb3V0aC5jb250YWluZXJzLm15Ymx1ZW1peC5uZXQvM2IzNGI2YTItMGE5Yy00NTczLWJhMDItYTVlYTU1MWQyMzM0L29uYm9hcmRpbmcifQ.QSP7m6tnzJB_p3E1KCvb5dlPfvmT5PfMOr2vfQnHqz0vBoMH5WjO3g0RHvuapV8HLVeMhVughSHYQlBScRZSyuq6JpSCjEPhzfh91QQgzrhjQ8oEkaGEwXaprWbYZPN0qIofguT5lnN0Ojmwo5N9QTo6cz2mBS6q07pBsyEqRkIV6z0S_30ZvtSPboU8OHIczNM5hfjuVqWXxzOy7UukKy3YTNYm6TPScyj0gt4nw_Nk4H9drreABuMBlar7vyApLWlDdNjcL7VsRCFL2BOog3BPkyPaEMV_nZxL3TWXPWiHLUkgV5o0MMi6RHIXr79KxEPa0hWYNcxo5Av6bPgBNg";
+    var resourceUrl= 'https://gtd-jv-app-sandbox.mybluemix.net/visibility/v1/shipments';
+    var headers = new Headers({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8', 'Authorization': tokennew});
+    var options = new RequestOptions({ headers: headers });
+     this.http.get(resourceUrl, options)
+                   .map((res:Response) => res.json())
+                   .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
